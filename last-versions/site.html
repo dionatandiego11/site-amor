@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leis entre Almas - Aracy Raquel Lousada</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Roboto:wght@300;400;500&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --azul-classico: #2c3e50;
+            --dourado-elegante: #d4af37;
+            --branco-puro: #ffffff;
+            --cinza-suave: #7f8c8d;
+            --cinza-claro: #ecf0f1;
+            --bege-classico: #f8f6f3;
+            --preto-suave: #2c2c2c;
+            --verde-sabio: #27ae60;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 300;
+            line-height: 1.7;
+            color: var(--preto-suave);
+            background: var(--branco-puro);
+            letter-spacing: 0.3px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header Clássico */
+        header {
+            background: var(--branco-puro);
+            border-bottom: 1px solid var(--cinza-claro);
+            padding: 2.5rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: var(--azul-classico);
+            text-align: left;
+            line-height: 1.1;
+            position: relative;
+            letter-spacing: -1px;
+        }
+
+        .logo::after {
+            content: '⚖️';
+            position: absolute;
+            right: -45px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.8rem;
+            opacity: 0.7;
+            animation: gentle-sway 4s ease-in-out infinite;
+        }
+
+        @keyframes gentle-sway {
+            0%, 100% { transform: translateY(-50%) rotate(-2deg); }
+            50% { transform: translateY(-55%) rotate(2deg); }
+        }
+
+        .tagline {
+            font-family: 'Roboto', sans-serif;
+            font-weight: 300;
+            font-style: italic;
+            font-size: 1rem;
+            color: var(--cinza-suave);
+            margin-top: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        nav {
+            margin-top: 1rem;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            gap: 3rem;
+        }
+
+        nav a {
+            color: var(--preto-suave);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+            position: relative;
+            text-transform: uppercase;
+        }
+
+        nav a:hover {
+            color: var(--dourado-elegante);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -8px;
+            left: 0;
+            background: var(--dourado-elegante);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section Clássico */
+        .hero {
+            background: linear-gradient(135deg, var(--bege-classico) 0%, var(--branco-puro) 100%);
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d4af37' fill-opacity='0.02'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z'/%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.3;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 4rem;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-text h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 300;
+            color: var(--azul-classico);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            letter-spacing: -1px;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            color: var(--cinza-suave);
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            background: var(--azul-classico);
+            color: var(--branco-puro);
+            padding: 1.2rem 2.5rem;
+            border: 2px solid var(--azul-classico);
+            border-radius: 0;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .cta-button:hover {
+            background: var(--branco-puro);
+            color: var(--azul-classico);
+            transform: translateY(-1px);
+        }
+
+        /* Ilustração Clássica */
+        .hero-illustration {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        .painting-frame {
+            width: 320px;
+            height: 400px;
+            background: var(--branco-puro);
+            border: 12px solid var(--dourado-elegante);
+            box-shadow: 
+                0 0 0 2px var(--azul-classico),
+                0 20px 40px rgba(44, 62, 80, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .painting-content {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #f4f1e8 0%, #e8dcc0 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--azul-classico);
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .painting-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .painting-quote {
+            font-size: 1rem;
+            font-style: italic;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+
+        .painting-signature {
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            font-size: 0.8rem;
+            opacity: 0.6;
+        }
+
+        /* Seção de Artigos Clássica */
+        .articles-section {
+            padding: 5rem 0;
+            background: var(--branco-puro);
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 300;
+            color: var(--azul-classico);
+            text-align: center;
+            margin-bottom: 4rem;
+            position: relative;
+            letter-spacing: -1px;
+        }
+
+        .section-title::after {
+            content: '';
+            width: 60px;
+            height: 1px;
+            background: var(--dourado-elegante);
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .articles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+        }
+
+        .article-card {
+            background: var(--branco-puro);
+            border: 1px solid var(--cinza-claro);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .article-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(44, 62, 80, 0.1);
+            border-color: var(--dourado-elegante);
+        }
+
+        .article-image {
+            height: 220px;
+            background: linear-gradient(135deg, var(--bege-classico), var(--cinza-claro));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border-bottom: 1px solid var(--cinza-claro);
+        }
+
+        .article-icon {
+            font-size: 4rem;
+            opacity: 0.4;
+        }
+
+        .article-content {
+            padding: 2.5rem;
+        }
+
+        .article-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 500;
+            color: var(--azul-classico);
+            margin-bottom: 1rem;
+            line-height: 1.3;
+            letter-spacing: -0.5px;
+        }
+
+        .article-excerpt {
+            color: var(--cinza-suave);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .read-more {
+            color: var(--azul-classico);
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: color 0.3s ease;
+            border-bottom: 1px solid transparent;
+            padding-bottom: 2px;
+        }
+
+        .read-more:hover {
+            color: var(--dourado-elegante);
+            border-bottom-color: var(--dourado-elegante);
+        }
+
+        /* Citação Clássica */
+        .quote-section {
+            background: var(--azul-classico);
+            color: var(--branco-puro);
+            padding: 5rem 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .quote-section::before {
+            content: '"';
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 12rem;
+            position: absolute;
+            top: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.1;
+            line-height: 1;
+        }
+
+        .quote-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            font-weight: 300;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+            position: relative;
+            z-index: 1;
+            line-height: 1.4;
+            letter-spacing: -0.5px;
+        }
+
+        .quote-author {
+            font-family: 'Roboto', sans-serif;
+            color: var(--dourado-elegante);
+            font-size: 1.1rem;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        /* Newsletter Clássica */
+        .newsletter {
+            background: var(--bege-classico);
+            padding: 4rem 0;
+            text-align: center;
+        }
+
+        .newsletter h2 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 300;
+            color: var(--azul-classico);
+            margin-bottom: 1rem;
+            letter-spacing: -1px;
+        }
+
+        .newsletter p {
+            font-size: 1.1rem;
+            color: var(--cinza-suave);
+            margin-bottom: 2.5rem;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+            gap: 0;
+            border: 2px solid var(--azul-classico);
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 1.2rem 1.5rem;
+            border: none;
+            font-size: 1rem;
+            outline: none;
+            font-weight: 300;
+            background: var(--branco-puro);
+        }
+
+        .newsletter-button {
+            background: var(--azul-classico);
+            color: var(--branco-puro);
+            padding: 1.2rem 2rem;
+            border: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .newsletter-button:hover {
+            background: var(--dourado-elegante);
+        }
+
+        /* Footer Clássico */
+        footer {
+            background: var(--preto-suave);
+            color: var(--branco-puro);
+            padding: 4rem 0 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-bio h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 300;
+            margin-bottom: 1.5rem;
+            color: var(--dourado-elegante);
+        }
+
+        .footer-bio p {
+            font-weight: 300;
+            line-height: 1.7;
+            color: var(--cinza-claro);
+        }
+
+        .footer-links h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+            color: var(--dourado-elegante);
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-links a {
+            color: var(--cinza-claro);
+            text-decoration: none;
+            font-weight: 300;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--dourado-elegante);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: transparent;
+            border: 1px solid var(--cinza-suave);
+            color: var(--cinza-claro);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            border-color: var(--dourado-elegante);
+            color: var(--dourado-elegante);
+            transform: translateY(-2px);
+        }
+
+        .copyright {
+            text-align: center;
+            border-top: 1px solid var(--cinza-suave);
+            padding-top: 2rem;
+            color: var(--cinza-claro);
+            font-weight: 300;
+        }
+
+        /* Responsivo */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 1.5rem;
+            }
+
+            .logo {
+                font-size: 2.2rem;
+            }
+
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 3rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2.8rem;
+            }
+
+            .painting-frame {
+                width: 280px;
+                height: 350px;
+            }
+
+            .articles-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 2rem;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-input, .newsletter-button {
+                border-radius: 0;
+            }
+
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1.5rem;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div>
+                    <div class="logo">Leis entre Almas</div>
+                    <div class="tagline">Onde a literatura clássica encontra o direito contemporâneo</div>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#reflexoes">Reflexões</a></li>
+                        <li><a href="#sobre">Sobre</a></li>
+                        <li><a href="#contato">Contato</a></li>
+                        <li><a href="#newsletter">Newsletter</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>Entre Dostoiévski e as Leis Trabalhistas</h1>
+                    <p>Uma jornada através dos grandes mestres da literatura, revelando como suas verdades atemporais sobre a condição humana ecoam nas questões mais urgentes do direito do trabalho contemporâneo.</p>
+                    <a href="#reflexoes" class="cta-button">Iniciar a Leitura</a>
+                </div>
+                <div class="hero-illustration">
+                    <div class="painting-frame">
+                        <div class="painting-content">
+                            <div class="painting-title">A Alma do<br>Trabalhador</div>
+                            <div class="painting-quote">
+                                "O homem não pode viver<br>sem um ideal permanente<br>e inabalável de bem"
+                            </div>
+                            <div class="painting-signature">F.D.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Artigos Section -->
+    <section class="articles-section" id="reflexoes">
+        <div class="container">
+            <h2 class="section-title">Reflexões Literárias</h2>
+            <div class="articles-grid">
+                <article class="article-card fade-in">
+                    <div class="article-image">
+                        <div class="article-icon">📚</div>
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">Crime e Castigo no Ambiente Corporativo</h3>
+                        <p class="article-excerpt">Como Raskolnikov de Dostoiévski nos ajuda a compreender a tortura psicológica do assédio moral no trabalho. Uma análise da culpa, redenção e dignidade humana nas relações laborais...</p>
+                        <a href="#" class="read-more">Ler Reflexão →</a>
+                    </div>
+                </article>
+
+                <article class="article-card fade-in">
+                    <div class="article-image">
+                        <div class="article-icon">🎨</div>
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">Os Irmãos Karamázov e a Responsabilidade Social</h3>
+                        <p class="article-excerpt">"Cada um de nós é culpado por tudo e por todos diante de todos." Como a obra-prima de Dostoiévski ilumina nossa responsabilidade coletiva na construção de relações de trabalho justas...</p>
+                        <a href="#" class="read-more">Ler Reflexão →</a>
+                    </div>
+                </article>
+
+                <article class="article-card fade-in">
+                    <div class="article-image">
+                        <div class="article-icon">⚖️</div>
+                    </div>
+                    <div class="article-content">
+                        <h3 class="article-title">O Idiota e a Pureza nas Relações Trabalhistas</h3>
+                        <p class="article-excerpt">O Príncipe Myshkin como metáfora do trabalhador honesto em um mundo corporativo corrompido. Uma reflexão sobre integridade, exploração e a preservação da alma humana no ambiente laboral...</p>
+                        <a href="#" class="read-more">Ler Reflexão →</a>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Citação Destacada -->
+    <section class="quote-section">
+        <div class="container">
+            <div class="quote-text">
+                A verdadeira justiça não reside apenas nas leis escritas, mas na compreensão profunda da alma humana e de suas necessidades mais essenciais.
+            </div>
+            <div class="quote-author">Aracy Raquel Lousada</div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter" id="newsletter">
+        <div class="container">
+            <h2>Reflexões Quinzenais</h2>
+            <p>Receba análises profundas que conectam os grandes clássicos da literatura com questões contemporâneas do direito trabalhista. Pensamento, arte e justiça social em sua caixa de entrada.</p>
+            <form class="newsletter-form">
+                <input type="email" class="newsletter-input" placeholder="Seu melhor email" required>
+                <button type="submit" class="newsletter-button">Participar</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-bio">
+                    <h3>Aracy Raquel Lousada</h3>
+                    <p>Advogada trabalhista apaixonada pela literatura clássica. Acredita que os grandes mestres da palavra oferecem insights únicos sobre a condição humana no trabalho. Especialista em conectar arte, filosofia e direito para uma compreensão mais profunda da justiça social.</p>
+                    <div class="social-links">
+                        <a href="#" title="Instagram">📷</a>
+                        <a href="#" title="LinkedIn">💼</a>
+                        <a href="#" title="Email">✉️</a>
+                    </div>
+                </div>
+                <div class="footer-links">
+                    <h4>Navegação</h4>
+                    <ul>
+                        <li><a href="#reflexoes">Reflexões</a></li>
+                        <li><a href="#sobre">Sobre a Autora</a></li>
+                        <li><a href="#contato">Contato</a></li>
+                        <li><a href="#newsletter">Newsletter</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h4>Temas</h4>
+                    <ul>
+                        <li><a href="#">Dostoiévski</a></li>
+                        <li><a href="#">Direito Trabalhista</a></li>
+                        <li><a href="#">Literatura Russa</a></li>
+                        <li><a href="#">Filosofia Jurídica</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Leis entre Almas. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animação suave para links internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Animação fade-in ao rolar
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Newsletter form
+        document.querySelector('.newsletter-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const email = this.querySelector('input[type="email"]').value;
+            const button = this.querySelector('button');
+            
+            button.textContent = 'Enviando...';
+            button.style.background = '#27ae60';
+            
+            setTimeout(() => {
+                button.textContent = 'Bem-vindo(a)! ✨';
+                this.querySelector('input').value = '';
+                
+                setTimeout(() => {
+                    button.textContent = 'Participar';
+                    button.style.background = '';
+                }, 3000);
+            }, 2000);
+        });
+
+        // Efeito sutil de parallax na painting
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const painting = document.querySelector('.painting-frame');
+            if (painting && window.innerWidth > 768) {
+                painting.style.transform = `translateY(${scrolled * 0.1}px) rotate(${scrolled * 0.02}deg)`;
+            }
+        });
+    </script>
+</body>
+</html>
