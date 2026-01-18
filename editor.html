@@ -1,0 +1,1236 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Editor de Post - Entre Leis & Almas</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link href="https://cdn.quilljs.com/1.3.7/quill.snow.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2d1b4e;
+            --secondary-color: #8b8296;
+            --accent-color: #000000;
+            --text-color: #2d1b4e;
+            --background-color: #faf9f6;
+            --white: #ffffff;
+            --border-color: #e8e5e0;
+            --success-color: #10b981;
+            --error-color: #dc2626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .editor-header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s;
+        }
+
+        .back-btn:hover {
+            color: var(--primary-color);
+        }
+
+        .post-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--success-color);
+        }
+
+        .status-dot.unsaved {
+            background: #f59e0b;
+        }
+
+        .status-dot.uploading {
+            background: #3b82f6;
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 18px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn.primary {
+            background: var(--accent-color);
+            color: var(--white);
+        }
+
+        .btn.primary:hover {
+            background: #333;
+        }
+
+        .btn.secondary {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--border-color);
+        }
+
+        .btn.secondary:hover {
+            border-color: var(--primary-color);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Main Layout */
+        .editor-container {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) 360px;
+            min-height: calc(100vh - 60px);
+        }
+
+        /* Editor Panel */
+        .editor-panel {
+            padding: 40px;
+            background: var(--white);
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+        }
+
+        .title-input {
+            width: 100%;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            border: none;
+            outline: none;
+            background: transparent;
+            margin-bottom: 25px;
+            line-height: 1.2;
+        }
+
+        .title-input::placeholder {
+            color: #ccc;
+        }
+
+        /* Image Upload Section */
+        .image-upload-section {
+            background: #f8f7f4;
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .image-upload-section:hover {
+            border-color: var(--primary-color);
+        }
+
+        .image-upload-section.dragover {
+            border-color: var(--success-color);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .upload-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+
+        .upload-header h3 {
+            font-size: 1rem;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .upload-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .upload-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 10px 16px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .upload-btn:hover {
+            background: #3d2a5e;
+        }
+
+        .upload-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .upload-options {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .upload-options select {
+            padding: 8px 12px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            background: var(--white);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .upload-hint {
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            margin-top: 10px;
+        }
+
+        /* Image Preview */
+        .image-preview-container {
+            display: none;
+            margin-top: 15px;
+            position: relative;
+        }
+
+        .image-preview-container.active {
+            display: block;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            object-fit: contain;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .image-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            gap: 8px;
+        }
+
+        .image-action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .image-action-btn:hover {
+            background: var(--error-color);
+        }
+
+        /* Cover Image Section */
+        .cover-image-section {
+            background: var(--white);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+        }
+
+        .cover-image-section h3 {
+            font-size: 0.9rem;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+        }
+
+        .cover-preview {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .cover-preview.active {
+            display: block;
+        }
+
+        .cover-upload-area {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .cover-url-input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .cover-url-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        /* Quill Editor */
+        #editor-container {
+            min-height: 400px;
+        }
+
+        .ql-toolbar.ql-snow {
+            border: none;
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 0;
+            margin-bottom: 20px;
+        }
+
+        .ql-container.ql-snow {
+            border: none;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+
+        .ql-editor {
+            padding: 0;
+            min-height: 300px;
+        }
+
+        .ql-editor p {
+            margin-bottom: 1em;
+        }
+
+        .ql-editor h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin: 1.5em 0 0.5em;
+            color: var(--primary-color);
+        }
+
+        .ql-editor h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            margin: 1.2em 0 0.4em;
+            color: var(--primary-color);
+        }
+
+        .ql-editor blockquote {
+            border-left: 4px solid var(--primary-color);
+            padding-left: 20px;
+            margin: 1.5em 0;
+            font-style: italic;
+            color: var(--secondary-color);
+        }
+
+        .ql-editor img {
+            max-width: 100%;
+            border-radius: 12px;
+            margin: 20px 0;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            padding: 30px;
+            background: var(--background-color);
+            overflow-y: auto;
+        }
+
+        .sidebar-section {
+            margin-bottom: 30px;
+        }
+
+        .sidebar-section h3 {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 6px;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            background: var(--white);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+
+        .form-group small {
+            display: block;
+            margin-top: 5px;
+            color: var(--secondary-color);
+            font-size: 0.8rem;
+        }
+
+        /* Toggle Switches */
+        .toggle-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .toggle-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 15px;
+            background: var(--white);
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .toggle-label {
+            font-weight: 500;
+            color: var(--primary-color);
+        }
+
+        .toggle-switch {
+            position: relative;
+            width: 44px;
+            height: 24px;
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: var(--border-color);
+            transition: 0.3s;
+            border-radius: 24px;
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+
+        .toggle-switch input:checked+.toggle-slider {
+            background-color: var(--success-color);
+        }
+
+        .toggle-switch input:checked+.toggle-slider:before {
+            transform: translateX(20px);
+        }
+
+        /* Upload Progress */
+        .upload-progress {
+            display: none;
+            margin-top: 15px;
+        }
+
+        .upload-progress.active {
+            display: block;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--border-color);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--success-color);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: var(--secondary-color);
+            margin-top: 5px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: var(--success-color);
+        }
+
+        .toast.error {
+            background: var(--error-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .editor-container {
+                grid-template-columns: 1fr;
+            }
+
+            .sidebar {
+                border-top: 1px solid var(--border-color);
+            }
+
+            .editor-panel {
+                padding: 25px;
+            }
+
+            .title-input {
+                font-size: 1.8rem;
+            }
+        }
+
+        body.fullscreen .editor-container {
+            grid-template-columns: 1fr;
+        }
+
+        body.fullscreen .sidebar {
+            display: none;
+        }
+
+        body.fullscreen .editor-panel {
+            border-right: none;
+            justify-self: center;
+            width: 100%;
+            max-width: 900px;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="editor-header">
+        <div class="header-left">
+            <a href="admin.html" class="back-btn">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M19 12H5M12 19l-7-7 7-7" />
+                </svg>
+                Voltar
+            </a>
+            <div class="post-status">
+                <span class="status-dot" id="statusDot"></span>
+                <span id="statusText">Salvo</span>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn secondary" id="previewBtn" onclick="openPreview()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
+                    <circle cx="12" cy="12" r="3" />
+                </svg>
+                Visualizar
+            </button>
+            <button class="btn secondary" id="expandBtn" onclick="toggleFullscreen()">Expandir</button>
+            <button class="btn secondary" id="draftBtn" onclick="savePost(false)">Salvar Rascunho</button>
+            <button class="btn primary" id="publishBtn" onclick="savePost(true)">Publicar</button>
+        </div>
+    </header>
+
+    <div class="editor-container">
+        <div class="editor-panel">
+            <input type="text" id="title" class="title-input" placeholder="Título do artigo..." autocomplete="off">
+
+            <!-- Cover Image Upload -->
+            <div class="cover-image-section">
+                <h3>📷 Imagem de Capa</h3>
+                <img id="coverPreview" class="cover-preview" alt="Preview da capa">
+                <div class="cover-upload-area">
+                    <input type="text" id="coverUrl" class="cover-url-input"
+                        placeholder="URL da imagem ou faça upload...">
+                    <label class="upload-btn" for="coverUpload">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="17 8 12 3 7 8" />
+                            <line x1="12" y1="3" x2="12" y2="15" />
+                        </svg>
+                        Upload
+                    </label>
+                    <input type="file" id="coverUpload" accept="image/jpeg,image/png,image/gif,image/webp"
+                        style="display: none;">
+                </div>
+                <div class="upload-progress" id="coverProgress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="coverProgressFill"></div>
+                    </div>
+                    <div class="progress-text" id="coverProgressText">Enviando...</div>
+                </div>
+            </div>
+
+            <!-- Content Image Upload -->
+            <div class="image-upload-section" id="imageDropZone">
+                <div class="upload-header">
+                    <h3>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                            <circle cx="8.5" cy="8.5" r="1.5" />
+                            <polyline points="21 15 16 10 5 21" />
+                        </svg>
+                        Inserir Imagem no Texto
+                    </h3>
+                </div>
+                <div class="upload-controls">
+                    <label class="upload-btn" for="contentImageUpload" id="uploadLabel">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                            <polyline points="17 8 12 3 7 8" />
+                            <line x1="12" y1="3" x2="12" y2="15" />
+                        </svg>
+                        <span id="uploadBtnText">Escolher Imagem</span>
+                    </label>
+                    <input type="file" id="contentImageUpload" accept="image/jpeg,image/png,image/gif,image/webp"
+                        style="display: none;">
+
+                    <div class="upload-options">
+                        <select id="imageSize">
+                            <option value="full">Largura total</option>
+                            <option value="medium">Média (70%)</option>
+                            <option value="left">Alinhar esquerda</option>
+                            <option value="right">Alinhar direita</option>
+                        </select>
+                    </div>
+                </div>
+                <p class="upload-hint">💡 Arraste uma imagem aqui ou clique para fazer upload. Máximo: 5MB. Formatos:
+                    JPEG, PNG, GIF, WebP</p>
+
+                <div class="upload-progress" id="contentProgress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="contentProgressFill"></div>
+                    </div>
+                    <div class="progress-text" id="contentProgressText">Enviando...</div>
+                </div>
+            </div>
+
+            <!-- Quill Editor -->
+            <div id="editor-container"></div>
+        </div>
+
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3>Configurações</h3>
+
+                <div class="form-group">
+                    <label for="category">Categoria</label>
+                    <select id="category">
+                        <option value="Juridico">Jurídico</option>
+                        <option value="Reflexao">Reflexão</option>
+                        <option value="Opiniao">Opinião</option>
+                        <option value="Sociedade">Sociedade</option>
+                        <option value="Literatura">Literatura</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="excerpt">Resumo</label>
+                    <textarea id="excerpt" placeholder="Breve descrição para os cards..."></textarea>
+                    <small>Aparece na listagem de artigos</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="slug">URL (slug)</label>
+                    <input type="text" id="slug" placeholder="url-do-artigo">
+                    <small>Gerado automaticamente do título</small>
+                </div>
+            </div>
+
+            <div class="sidebar-section">
+                <h3>Publicação</h3>
+                <div class="toggle-group">
+                    <div class="toggle-item">
+                        <span class="toggle-label">Publicado</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="published">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-item">
+                        <span class="toggle-label">Destaque</span>
+                        <label class="toggle-switch">
+                            <input type="checkbox" id="featured">
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <div class="toast" id="toast"></div>
+    <input type="hidden" id="postId">
+    <input type="hidden" id="image_url">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.quilljs.com/1.3.7/quill.min.js"></script>
+    <script src="js/supabase.js"></script>
+    <script>
+        let quill;
+        let hasUnsavedChanges = false;
+        let slugTouched = false;
+        let autoSaveTimer;
+        let isUploading = false;
+
+        // Initialize
+        (async () => {
+            const session = await requireAuth();
+            if (session) {
+                initEditor();
+                initImageUpload();
+                loadPostIfEditing();
+            }
+        })();
+
+        function initEditor() {
+            quill = new Quill('#editor-container', {
+                theme: 'snow',
+                placeholder: 'Comece a escrever seu artigo...',
+                modules: {
+                    toolbar: [
+                        [{ 'header': [2, 3, false] }],
+                        ['bold', 'italic', 'underline'],
+                        ['blockquote'],
+                        [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                        ['link', 'image'],
+                        ['clean']
+                    ]
+                }
+            });
+
+            // Track changes
+            quill.on('text-change', function () {
+                markUnsaved();
+                scheduleAutoSave();
+            });
+
+            // Setup form listeners
+            const titleInput = document.getElementById('title');
+            const slugInput = document.getElementById('slug');
+
+            titleInput.addEventListener('input', function () {
+                if (!slugTouched) {
+                    slugInput.value = generateSlug(this.value);
+                }
+                markUnsaved();
+            });
+
+            slugInput.addEventListener('input', function () {
+                slugTouched = true;
+                markUnsaved();
+            });
+
+            // Track changes on all inputs
+            document.querySelectorAll('input, textarea, select').forEach(el => {
+                el.addEventListener('change', markUnsaved);
+            });
+
+            // Cover URL preview
+            const coverUrl = document.getElementById('coverUrl');
+            const coverPreview = document.getElementById('coverPreview');
+
+            coverUrl.addEventListener('input', function () {
+                if (this.value) {
+                    coverPreview.src = this.value;
+                    coverPreview.classList.add('active');
+                } else {
+                    coverPreview.classList.remove('active');
+                }
+                document.getElementById('image_url').value = this.value;
+                markUnsaved();
+            });
+
+            coverPreview.addEventListener('error', function () {
+                this.classList.remove('active');
+            });
+        }
+
+        function initImageUpload() {
+            // Cover image upload
+            const coverUpload = document.getElementById('coverUpload');
+            coverUpload.addEventListener('change', async function () {
+                if (this.files && this.files[0]) {
+                    await uploadCoverImage(this.files[0]);
+                    this.value = '';
+                }
+            });
+
+            // Content image upload
+            const contentUpload = document.getElementById('contentImageUpload');
+            contentUpload.addEventListener('change', async function () {
+                if (this.files && this.files[0]) {
+                    await uploadContentImage(this.files[0]);
+                    this.value = '';
+                }
+            });
+
+            // Drag and drop for content images
+            const dropZone = document.getElementById('imageDropZone');
+
+            dropZone.addEventListener('dragover', function (e) {
+                e.preventDefault();
+                this.classList.add('dragover');
+            });
+
+            dropZone.addEventListener('dragleave', function (e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+            });
+
+            dropZone.addEventListener('drop', async function (e) {
+                e.preventDefault();
+                this.classList.remove('dragover');
+
+                const files = e.dataTransfer.files;
+                if (files && files[0] && files[0].type.startsWith('image/')) {
+                    await uploadContentImage(files[0]);
+                }
+            });
+        }
+
+        async function uploadCoverImage(file) {
+            const progress = document.getElementById('coverProgress');
+            const progressFill = document.getElementById('coverProgressFill');
+            const progressText = document.getElementById('coverProgressText');
+            const coverUrl = document.getElementById('coverUrl');
+            const coverPreview = document.getElementById('coverPreview');
+
+            try {
+                isUploading = true;
+                progress.classList.add('active');
+                setStatus('Enviando imagem...', 'uploading');
+
+                // Simulate progress
+                progressFill.style.width = '30%';
+                progressText.textContent = 'Enviando...';
+
+                const result = await uploadImage(file, 'covers');
+
+                progressFill.style.width = '100%';
+                progressText.textContent = 'Concluído!';
+
+                // Update URL input and preview
+                coverUrl.value = result.url;
+                coverPreview.src = result.url;
+                coverPreview.classList.add('active');
+                document.getElementById('image_url').value = result.url;
+
+                showToast('Imagem de capa enviada com sucesso!', 'success');
+                markUnsaved();
+
+                setTimeout(() => {
+                    progress.classList.remove('active');
+                    progressFill.style.width = '0%';
+                }, 1500);
+
+            } catch (error) {
+                showToast(error.message, 'error');
+                progress.classList.remove('active');
+            } finally {
+                isUploading = false;
+                setStatus('Não salvo', 'unsaved');
+            }
+        }
+
+        async function uploadContentImage(file) {
+            const progress = document.getElementById('contentProgress');
+            const progressFill = document.getElementById('contentProgressFill');
+            const progressText = document.getElementById('contentProgressText');
+            const uploadBtn = document.getElementById('uploadLabel');
+            const uploadBtnText = document.getElementById('uploadBtnText');
+
+            try {
+                isUploading = true;
+                progress.classList.add('active');
+                uploadBtn.style.pointerEvents = 'none';
+                uploadBtnText.textContent = 'Enviando...';
+                setStatus('Enviando imagem...', 'uploading');
+
+                progressFill.style.width = '30%';
+                progressText.textContent = 'Enviando para o servidor...';
+
+                const result = await uploadImage(file, 'posts');
+
+                progressFill.style.width = '100%';
+                progressText.textContent = 'Inserindo no texto...';
+
+                // Get alignment class
+                const sizeSelect = document.getElementById('imageSize');
+                const size = sizeSelect.value;
+                let style = '';
+
+                if (size === 'medium') {
+                    style = 'width: 70%; margin: 20px auto; display: block;';
+                } else if (size === 'left') {
+                    style = 'float: left; width: 45%; margin: 0 20px 20px 0;';
+                } else if (size === 'right') {
+                    style = 'float: right; width: 45%; margin: 0 0 20px 20px;';
+                } else {
+                    style = 'width: 100%; margin: 20px 0;';
+                }
+
+                // Insert image at cursor position
+                const range = quill.getSelection(true);
+                const index = range ? range.index : quill.getLength();
+
+                quill.insertEmbed(index, 'image', result.url);
+
+                // Apply style to the inserted image
+                setTimeout(() => {
+                    const images = quill.root.querySelectorAll('img');
+                    images.forEach(img => {
+                        if (img.src === result.url) {
+                            img.setAttribute('style', style);
+                        }
+                    });
+                }, 100);
+
+                showToast('Imagem inserida com sucesso!', 'success');
+                markUnsaved();
+
+                setTimeout(() => {
+                    progress.classList.remove('active');
+                    progressFill.style.width = '0%';
+                }, 1500);
+
+            } catch (error) {
+                showToast(error.message, 'error');
+                progress.classList.remove('active');
+            } finally {
+                isUploading = false;
+                uploadBtn.style.pointerEvents = 'auto';
+                uploadBtnText.textContent = 'Escolher Imagem';
+                setStatus('Não salvo', 'unsaved');
+            }
+        }
+
+        function setStatus(text, type) {
+            const dot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+
+            dot.className = 'status-dot';
+            if (type === 'unsaved') {
+                dot.classList.add('unsaved');
+            } else if (type === 'uploading') {
+                dot.classList.add('uploading');
+            }
+
+            statusText.textContent = text;
+        }
+
+        function loadPostIfEditing() {
+            const params = new URLSearchParams(window.location.search);
+            const postId = params.get('id');
+
+            if (postId) {
+                loadPost(postId);
+            }
+        }
+
+        async function loadPost(id) {
+            try {
+                const posts = await getPosts(false);
+                const post = posts.find(p => p.id === id);
+
+                if (post) {
+                    document.getElementById('postId').value = post.id;
+                    document.getElementById('title').value = post.title || '';
+                    document.getElementById('slug').value = post.slug || '';
+                    document.getElementById('category').value = post.category || 'Juridico';
+                    document.getElementById('excerpt').value = post.excerpt || '';
+                    document.getElementById('image_url').value = post.image_url || '';
+                    document.getElementById('coverUrl').value = post.image_url || '';
+                    document.getElementById('published').checked = post.published;
+                    document.getElementById('featured').checked = post.featured;
+                    slugTouched = true;
+
+                    // Show cover preview
+                    if (post.image_url) {
+                        const coverPreview = document.getElementById('coverPreview');
+                        coverPreview.src = post.image_url;
+                        coverPreview.classList.add('active');
+                    }
+
+                    // Load content into editor
+                    if (post.content) {
+                        quill.root.innerHTML = post.content;
+                    }
+
+                    markSaved();
+                }
+            } catch (error) {
+                showToast('Erro ao carregar post', 'error');
+                console.error(error);
+            }
+        }
+
+        async function savePost(publish = false) {
+            if (isUploading) {
+                showToast('Aguarde o upload da imagem terminar', 'error');
+                return;
+            }
+
+            const publishBtn = document.getElementById('publishBtn');
+            const draftBtn = document.getElementById('draftBtn');
+
+            publishBtn.disabled = true;
+            draftBtn.disabled = true;
+            publishBtn.textContent = 'Salvando...';
+
+            const title = document.getElementById('title').value.trim();
+            if (!title) {
+                showToast('O título é obrigatório', 'error');
+                publishBtn.disabled = false;
+                draftBtn.disabled = false;
+                publishBtn.textContent = 'Publicar';
+                return;
+            }
+
+            const contentHtml = quill.root.innerHTML;
+            const contentText = quill.getText();
+            let excerpt = document.getElementById('excerpt').value.trim();
+
+            // Auto-generate excerpt if empty
+            if (!excerpt && contentText) {
+                excerpt = contentText.substring(0, 150).trim() + (contentText.length > 150 ? '...' : '');
+            }
+
+            const postData = {
+                title: title,
+                slug: document.getElementById('slug').value || generateSlug(title),
+                category: document.getElementById('category').value,
+                excerpt: excerpt,
+                content: contentHtml,
+                image_url: document.getElementById('image_url').value || document.getElementById('coverUrl').value,
+                published: publish || document.getElementById('published').checked,
+                featured: document.getElementById('featured').checked
+            };
+
+            try {
+                const postId = document.getElementById('postId').value;
+
+                if (postId) {
+                    await updatePost(postId, postData);
+                    showToast('Post atualizado com sucesso!', 'success');
+                } else {
+                    const newPost = await createPost(postData);
+                    document.getElementById('postId').value = newPost.id;
+                    history.replaceState(null, '', 'editor.html?id=' + newPost.id);
+                    showToast('Post criado com sucesso!', 'success');
+                }
+
+                if (publish) {
+                    document.getElementById('published').checked = true;
+                }
+
+                markSaved();
+            } catch (error) {
+                showToast('Erro ao salvar: ' + error.message, 'error');
+            } finally {
+                publishBtn.disabled = false;
+                draftBtn.disabled = false;
+                publishBtn.textContent = 'Publicar';
+            }
+        }
+
+        function markUnsaved() {
+            hasUnsavedChanges = true;
+            setStatus('Não salvo', 'unsaved');
+        }
+
+        function markSaved() {
+            hasUnsavedChanges = false;
+            setStatus('Salvo', '');
+        }
+
+        function scheduleAutoSave() {
+            clearTimeout(autoSaveTimer);
+            autoSaveTimer = setTimeout(() => {
+                if (hasUnsavedChanges && document.getElementById('title').value.trim()) {
+                    savePost(false);
+                }
+            }, 30000);
+        }
+
+        function openPreview() {
+            const slug = document.getElementById('slug').value || generateSlug(document.getElementById('title').value);
+            if (slug) {
+                window.open('post.html?slug=' + slug, '_blank');
+            } else {
+                showToast('Salve o post primeiro para visualizar', 'error');
+            }
+        }
+
+        function toggleFullscreen() {
+            document.body.classList.toggle('fullscreen');
+            const expandBtn = document.getElementById('expandBtn');
+            expandBtn.textContent = document.body.classList.contains('fullscreen') ? 'Recolher' : 'Expandir';
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = 'toast ' + type + ' show';
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        // Warn before leaving with unsaved changes
+        window.addEventListener('beforeunload', function (e) {
+            if (hasUnsavedChanges) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Artigo — Entre Leis & Almas</title>
+    <meta name="description" content="Leia nossos artigos sobre direito, literatura e humanidade.">
+    <meta name="author" content="Aracy Raquel Lousada">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2d1b4e;
+            --secondary-color: #8b8296;
+            --accent-color: #000000;
+            --text-color: #2d1b4e;
+            --background-color: #faf9f6;
+            --white: #ffffff;
+            --border-color: #e8e5e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .wide-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        #header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(250, 249, 246, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 16px;
+        }
+
+        .logo {
+            margin-right: 10px;
+            color: var(--accent-color);
+            display: flex;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+            align-items: center;
+        }
+
+        nav a {
+            text-decoration: none;
+            color: var(--secondary-color);
+            font-weight: 500;
+            font-size: 15px;
+            transition: color 0.3s ease;
+        }
+
+        nav a:hover {
+            color: var(--primary-color);
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn.ghost {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn.ghost:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn.gold {
+            background: var(--accent-color);
+            color: var(--white);
+        }
+
+        .btn.gold:hover {
+            background: #b8941f;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            min-height: calc(100vh - 200px);
+        }
+
+        /* Article Header */
+        .article-header {
+            padding: 60px 0 40px;
+            text-align: center;
+            background: linear-gradient(135deg, var(--background-color) 0%, #f0eee8 100%);
+        }
+
+        .article-category {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .article-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            line-height: 1.2;
+        }
+
+        .article-subtitle {
+            font-size: 1.2rem;
+            color: var(--secondary-color);
+            margin-bottom: 20px;
+        }
+
+        .article-meta {
+            color: var(--secondary-color);
+            font-size: 0.95rem;
+        }
+
+        .article-meta span {
+            margin: 0 10px;
+        }
+
+        /* Article Image */
+        .article-image-container {
+            margin: -20px auto 40px;
+            max-width: 900px;
+            padding: 0 20px;
+        }
+
+        .article-image-container img {
+            width: 100%;
+            max-height: 500px;
+            object-fit: cover;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(45, 27, 78, 0.15);
+        }
+
+        /* Article Content */
+        .article-content {
+            padding: 40px 0 80px;
+        }
+
+        .article-content h1,
+        .article-content h2,
+        .article-content h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-color);
+            margin: 40px 0 20px;
+            line-height: 1.3;
+        }
+
+        .article-content h1 {
+            font-size: 2rem;
+        }
+
+        .article-content h2 {
+            font-size: 1.6rem;
+        }
+
+        .article-content h3 {
+            font-size: 1.3rem;
+        }
+
+        .article-content p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 25px;
+            color: var(--text-color);
+        }
+
+        .article-content blockquote {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            color: var(--primary-color);
+            border-left: 4px solid var(--accent-color);
+            padding: 20px 30px;
+            margin: 40px 0;
+            background: #f8f7f4;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .article-content ul,
+        .article-content ol {
+            margin: 25px 0;
+            padding-left: 30px;
+        }
+
+        .article-content li {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 10px;
+        }
+
+        .article-content a {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
+        .article-content a:hover {
+            color: var(--primary-color);
+        }
+
+        .article-content img {
+            max-width: 100%;
+            border-radius: 12px;
+            margin: 30px 0;
+        }
+
+        .article-content img.content-image.size-medium {
+            width: 70%;
+        }
+
+        .article-content img.content-image.align-left {
+            float: left;
+            width: 45%;
+            margin: 0 20px 20px 0;
+        }
+
+        .article-content img.content-image.align-right {
+            float: right;
+            width: 45%;
+            margin: 0 0 20px 20px;
+        }
+
+        .article-content::after {
+            content: "";
+            display: block;
+            clear: both;
+        }
+
+        .article-content pre {
+            background: #2d1b4e;
+            color: #f8f7f4;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 25px 0;
+        }
+
+        .article-content code {
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.9rem;
+        }
+
+        /* Back Link */
+        .back-link {
+            margin-bottom: 30px;
+        }
+
+        .back-link a {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .back-link a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Loading State */
+        .loading-state {
+            text-align: center;
+            padding: 100px 20px;
+            color: var(--secondary-color);
+        }
+
+        /* Error State */
+        .error-state {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        .error-state h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .error-state p {
+            color: var(--secondary-color);
+            margin-bottom: 25px;
+        }
+
+        /* Footer */
+        footer {
+            margin: 50px auto;
+            color: var(--secondary-color);
+            text-align: center;
+            font-size: 15px;
+            padding: 20px 0;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 20px;
+                text-align: center;
+            }
+
+            nav ul {
+                gap: 15px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .article-header {
+                padding: 40px 0 30px;
+            }
+
+            .article-content p,
+            .article-content li {
+                font-size: 1rem;
+            }
+
+            .article-content blockquote {
+                font-size: 1.1rem;
+                padding: 15px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header id="header">
+        <div class="wide-container nav">
+            <a class="brand" href="index.html" aria-label="Página inicial">
+                <span class="logo" aria-hidden="true">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 3v18" />
+                        <path d="M7 7h10" />
+                        <path d="M5 7l3 7a3 3 0 1 1-6 0l3-7Zm14 0l3 7a3 3 0 1 1-6 0l3-7Z" />
+                    </svg>
+                </span>
+                <b>ENTRE LEIS & ALMAS</b>
+            </a>
+
+            <nav aria-label="Menu principal">
+                <ul>
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="artigos.html">Artigos</a></li>
+                    <li><a href="sobre.html">Sobre</a></li>
+                    <li><a href="contato.html">Contato</a></li>
+                </ul>
+            </nav>
+
+            <div class="cta">
+                <a href="artigos.html#newsletter" class="btn ghost">Newsletter</a>
+                <a href="login.html" class="btn gold" style="margin-left: 10px;">Restrito</a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div id="postContent">
+            <div class="loading-state">
+                <p>Carregando artigo...</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="container">
+        <p>© <span id="year"></span> Entre Leis & Almas — Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script>
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Get slug from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const slug = urlParams.get('slug');
+
+        // Load post
+        async function loadPost() {
+            const container = document.getElementById('postContent');
+
+            if (!slug) {
+                showError();
+                return;
+            }
+
+            try {
+                const post = await getPost(slug);
+
+                if (!post || (!post.published && !await getSession())) {
+                    showError();
+                    return;
+                }
+
+                // Update page title
+                document.title = `${post.title} — Entre Leis & Almas`;
+
+                // Render post (Content is already HTML from editor)
+                container.innerHTML = `
+          <article>
+            <header class="article-header">
+              <div class="container">
+                <div class="back-link">
+                  <a href="artigos.html">← Voltar aos artigos</a>
+                </div>
+                <span class="article-category">${post.category}</span>
+                <h1 class="article-title">${post.title}</h1>
+                ${post.subtitle ? `<p class="article-subtitle">${post.subtitle}</p>` : ''}
+                <div class="article-meta">
+                  <span>Por Aracy Raquel Lousada</span>
+                  <span>•</span>
+                  <span>${formatDate(post.created_at)}</span>
+                </div>
+              </div>
+            </header>
+
+            ${post.image_url ? `
+              <div class="article-image-container">
+                <img src="${post.image_url}" alt="${post.title}" onerror="this.parentElement.style.display='none'">
+              </div>
+            ` : ''}
+
+            <div class="article-content container">
+              ${post.content || '<p>Conteúdo em breve...</p>'}
+            </div>
+          </article>
+        `;
+
+            } catch (error) {
+                console.error('Erro ao carregar post:', error);
+                showError();
+            }
+        }
+
+        function showError() {
+            const container = document.getElementById('postContent');
+            container.innerHTML = `
+        <div class="error-state">
+          <h2>Artigo não encontrado</h2>
+          <p>O artigo que você procura não existe ou não está mais disponível.</p>
+          <a href="artigos.html" class="btn gold">Ver todos os artigos</a>
+        </div>
+      `;
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', function () {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(250, 249, 246, 0.98)';
+                header.style.boxShadow = '0 2px 10px rgba(45, 27, 78, 0.1)';
+            } else {
+                header.style.background = 'rgba(250, 249, 246, 0.95)';
+                header.style.boxShadow = 'none';
+            }
+        });
+
+        // Load post on page load
+        loadPost();
+    </script>
+</body>
+
+</html>

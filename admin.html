@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Painel Administrativo — Entre Leis & Almas</title>
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;800&family=Inter:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2d1b4e;
+            --secondary-color: #8b8296;
+            --accent-color: #000000;
+            --text-color: #2d1b4e;
+            --background-color: #faf9f6;
+            --white: #ffffff;
+            --border-color: #e8e5e0;
+            --success-color: #10b981;
+            --error-color: #dc2626;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--background-color);
+        }
+
+        /* Header */
+        .admin-header {
+            background: var(--white);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .admin-header .brand {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .admin-header .brand svg {
+            color: var(--accent-color);
+        }
+
+        .admin-header nav {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .admin-header nav a,
+        .admin-header nav button {
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .admin-header nav a:hover,
+        .admin-header nav button:hover {
+            color: var(--primary-color);
+        }
+
+        /* Main Layout */
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
+        }
+
+        .admin-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            color: var(--secondary-color);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border-radius: 8px 8px 0 0;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: #f0eee8;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: var(--white);
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(45, 27, 78, 0.08);
+        }
+
+        .stat-card h3 {
+            color: var(--secondary-color);
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+        }
+
+        .stat-card .number {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn.gold {
+            background: var(--accent-color);
+            color: var(--white);
+        }
+
+        .btn.gold:hover {
+            background: #333;
+        }
+
+        .btn.ghost {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn.ghost:hover {
+            background: var(--primary-color);
+            color: var(--white);
+        }
+
+        .btn.danger {
+            background: var(--error-color);
+            color: var(--white);
+        }
+
+        .btn.danger:hover {
+            background: #b91c1c;
+        }
+
+        .btn.small {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+
+        /* Table */
+        .data-table {
+            width: 100%;
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(45, 27, 78, 0.08);
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 15px 20px;
+            text-align: left;
+        }
+
+        .data-table th {
+            background: #f8f7f4;
+            font-weight: 600;
+            color: var(--primary-color);
+            font-size: 0.9rem;
+        }
+
+        .data-table tr:not(:last-child) td {
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .badge.published {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .badge.draft {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge.featured {
+            background: #ddd6fe;
+            color: #5b21b6;
+        }
+
+        .badge.unread {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 15px 25px;
+            border-radius: 8px;
+            color: white;
+            font-weight: 500;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: var(--success-color);
+        }
+
+        .toast.error {
+            background: var(--error-color);
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--secondary-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .admin-header {
+                padding: 15px;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .admin-container {
+                padding: 20px;
+            }
+
+            .data-table {
+                display: block;
+                overflow-x: auto;
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="admin-header">
+        <a href="index.html" class="brand">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 3v18" />
+                <path d="M7 7h10" />
+                <path d="M5 7l3 7a3 3 0 1 1-6 0l3-7Zm14 0l3 7a3 3 0 1 1-6 0l3-7Z" />
+            </svg>
+            <span>Entre Leis & Almas</span>
+        </a>
+        <nav>
+            <a href="index.html">Ver Site</a>
+            <button type="button" onclick="handleLogout()">Sair</button>
+        </nav>
+    </header>
+
+    <main class="admin-container">
+        <h1 class="admin-title">Painel Administrativo</h1>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Posts Publicados</h3>
+                <div class="number" id="publishedCount">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Rascunhos</h3>
+                <div class="number" id="draftCount">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Newsletter</h3>
+                <div class="number" id="subscriberCount">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Mensagens</h3>
+                <div class="number" id="messagesCount">-</div>
+            </div>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-btn active" data-tab="posts">Posts</button>
+            <button class="tab-btn" data-tab="messages">Mensagens</button>
+            <button class="tab-btn" data-tab="newsletter">Newsletter</button>
+        </div>
+
+        <!-- Posts Tab -->
+        <div id="posts" class="tab-content active">
+            <div style="margin-bottom: 20px;">
+                <a href="editor.html" class="btn gold">+ Novo Post</a>
+            </div>
+
+            <table class="data-table" id="postsTable">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Categoria</th>
+                        <th>Status</th>
+                        <th>Data</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="postsTableBody">
+                    <tr>
+                        <td colspan="5" class="empty-state">Carregando...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Messages Tab -->
+        <div id="messages" class="tab-content">
+            <table class="data-table" id="messagesTable">
+                <thead>
+                    <tr>
+                        <th>De</th>
+                        <th>Assunto</th>
+                        <th>Mensagem</th>
+                        <th>Data</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="messagesTableBody">
+                    <tr>
+                        <td colspan="5" class="empty-state">Carregando...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Newsletter Tab -->
+        <div id="newsletter" class="tab-content">
+            <table class="data-table" id="newsletterTable">
+                <thead>
+                    <tr>
+                        <th>Email</th>
+                        <th>Data de Inscrição</th>
+                    </tr>
+                </thead>
+                <tbody id="newsletterTableBody">
+                    <tr>
+                        <td colspan="2" class="empty-state">Carregando...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <!-- Toast -->
+    <div class="toast" id="toast"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script>
+        let currentPosts = [];
+
+        // Verificar autenticação
+        (async () => {
+            const session = await requireAuth();
+            if (session) {
+                loadData();
+            }
+        })();
+
+        // Carregar dados
+        async function loadData() {
+            try {
+                // Carregar posts
+                const posts = await getPosts(false);
+                currentPosts = posts;
+                renderPosts(posts);
+
+                // Atualizar contadores
+                const published = posts.filter(p => p.published).length;
+                const drafts = posts.filter(p => !p.published).length;
+                document.getElementById('publishedCount').textContent = published;
+                document.getElementById('draftCount').textContent = drafts;
+
+                // Carregar newsletter
+                const subscribers = await getNewsletterSubscribers();
+                renderNewsletter(subscribers);
+                document.getElementById('subscriberCount').textContent = subscribers.length;
+
+                // Carregar mensagens
+                try {
+                    const messages = await getContactMessages();
+                    renderMessages(messages);
+                    const unreadCount = messages.filter(m => !m.read).length;
+                    document.getElementById('messagesCount').textContent = unreadCount > 0 ? unreadCount + ' nova(s)' : messages.length;
+                } catch (e) {
+                    console.log('Mensagens não disponíveis:', e);
+                    document.getElementById('messagesCount').textContent = '0';
+                    document.getElementById('messagesTableBody').innerHTML = '<tr><td colspan="5" class="empty-state">Configure a tabela contact_messages no Supabase</td></tr>';
+                }
+            } catch (error) {
+                showToast('Erro ao carregar dados', 'error');
+                console.error(error);
+            }
+        }
+
+        // Renderizar posts
+        function renderPosts(posts) {
+            const tbody = document.getElementById('postsTableBody');
+
+            if (posts.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Nenhum post encontrado</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = posts.map(post => `
+                <tr>
+                    <td>
+                        <strong>${post.title}</strong>
+                        ${post.featured ? '<span class="badge featured">★</span>' : ''}
+                    </td>
+                    <td>${post.category}</td>
+                    <td>
+                        <span class="badge ${post.published ? 'published' : 'draft'}">
+                            ${post.published ? 'Publicado' : 'Rascunho'}
+                        </span>
+                    </td>
+                    <td>${formatDate(post.created_at)}</td>
+                    <td class="actions">
+                        <a href="editor.html?id=${post.id}" class="btn ghost small">Editar</a>
+                        <button class="btn danger small" onclick="confirmDelete('${post.id}')">Excluir</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Renderizar newsletter
+        function renderNewsletter(subscribers) {
+            const tbody = document.getElementById('newsletterTableBody');
+
+            if (subscribers.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="2" class="empty-state">Nenhum inscrito ainda</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = subscribers.map(sub => `
+                <tr>
+                    <td>${sub.email}</td>
+                    <td>${formatDate(sub.created_at)}</td>
+                </tr>
+            `).join('');
+        }
+
+        // Renderizar mensagens
+        function renderMessages(messages) {
+            const tbody = document.getElementById('messagesTableBody');
+
+            if (messages.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="5" class="empty-state">Nenhuma mensagem ainda</td></tr>';
+                return;
+            }
+
+            tbody.innerHTML = messages.map(msg => `
+                <tr style="${!msg.read ? 'background: #f0f9ff;' : ''}">
+                    <td>
+                        <strong>${msg.name}</strong>
+                        ${!msg.read ? '<span class="badge unread">Nova</span>' : ''}<br>
+                        <small style="color: var(--secondary-color);">${msg.email}</small>
+                    </td>
+                    <td>${msg.subject}</td>
+                    <td style="max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        ${msg.message.substring(0, 80)}${msg.message.length > 80 ? '...' : ''}
+                    </td>
+                    <td>${formatDate(msg.created_at)}</td>
+                    <td class="actions">
+                        <button class="btn ghost small" onclick="viewMessage('${msg.id}')">Ver</button>
+                        <button class="btn danger small" onclick="confirmDeleteMessage('${msg.id}')">Excluir</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        // Ver mensagem completa
+        async function viewMessage(id) {
+            try {
+                const messages = await getContactMessages();
+                const msg = messages.find(m => m.id === id);
+                if (msg) {
+                    // Marcar como lida
+                    if (!msg.read) {
+                        await markMessageRead(id);
+                        loadData();
+                    }
+
+                    alert(`De: ${msg.name}\nEmail: ${msg.email}\nAssunto: ${msg.subject}\n\n${msg.message}`);
+                }
+            } catch (error) {
+                showToast('Erro ao visualizar mensagem', 'error');
+            }
+        }
+
+        // Excluir mensagem
+        async function confirmDeleteMessage(id) {
+            if (confirm('Tem certeza que deseja excluir esta mensagem?')) {
+                try {
+                    await deleteContactMessage(id);
+                    showToast('Mensagem excluída!', 'success');
+                    loadData();
+                } catch (error) {
+                    showToast('Erro ao excluir: ' + error.message, 'error');
+                }
+            }
+        }
+
+        // Tabs
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+                this.classList.add('active');
+                document.getElementById(this.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Excluir post
+        async function confirmDelete(id) {
+            if (confirm('Tem certeza que deseja excluir este post?')) {
+                try {
+                    await deletePost(id);
+                    showToast('Post excluído com sucesso!', 'success');
+                    loadData();
+                } catch (error) {
+                    showToast('Erro ao excluir: ' + error.message, 'error');
+                }
+            }
+        }
+
+        // Logout
+        async function handleLogout() {
+            await signOut();
+            window.location.href = 'login.html';
+        }
+
+        // Toast
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+
+</html>
