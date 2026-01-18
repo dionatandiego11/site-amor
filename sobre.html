@@ -287,34 +287,151 @@
     @media (max-width: 768px) {
       .nav {
         flex-direction: column;
-        gap: 15px;
-        padding: 15px 20px;
+        gap: 12px;
+        padding: 12px 15px;
         text-align: center;
       }
 
+      .brand {
+        font-size: 14px;
+      }
+
       nav ul {
-        gap: 15px;
+        gap: 8px;
         flex-wrap: wrap;
         justify-content: center;
+      }
+
+      nav a {
+        font-size: 13px;
+      }
+
+      .btn {
+        padding: 8px 14px;
+        font-size: 12px;
+      }
+
+      .about-hero {
+        padding: 50px 15px 30px;
+      }
+
+      .about-title {
+        font-size: 2rem;
+      }
+
+      .about-subtitle {
+        font-size: 1rem;
+      }
+
+      .container {
+        padding: 0 15px;
+      }
+
+      .about-content {
+        padding: 40px 0 60px;
+      }
+
+      .content-block {
+        margin-bottom: 35px;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+      }
+
+      .content-text {
+        font-size: 1rem;
+        line-height: 1.8;
+        text-align: left;
       }
 
       .author-section {
         flex-direction: column;
         text-align: center;
-        padding: 40px 25px;
+        padding: 30px 20px;
+        gap: 25px;
       }
 
       .author-photo img {
-        width: 140px;
-        height: 140px;
+        width: 120px;
+        height: 120px;
+      }
+
+      .author-name {
+        font-size: 1.5rem;
+      }
+
+      .author-description {
+        font-size: 1rem;
+        text-align: left;
       }
 
       .cta-section {
-        padding: 50px 25px;
+        padding: 40px 20px;
+        margin-top: 40px;
+      }
+
+      .cta-section h2 {
+        font-size: 1.4rem;
+      }
+
+      .cta-section p {
+        font-size: 1rem;
+      }
+
+      .cta-section .btn {
+        display: block;
+        margin: 10px auto;
+        width: fit-content;
+      }
+
+      footer {
+        padding: 30px 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .brand {
+        font-size: 12px;
+      }
+
+      nav ul {
+        gap: 6px;
+      }
+
+      nav a {
+        font-size: 12px;
+      }
+
+      .btn {
+        padding: 6px 12px;
+        font-size: 11px;
+      }
+
+      .about-title {
+        font-size: 1.6rem;
+      }
+
+      .section-title {
+        font-size: 1.3rem;
       }
 
       .content-text {
-        text-align: left;
+        font-size: 0.95rem;
+      }
+
+      .author-photo img {
+        width: 100px;
+        height: 100px;
+      }
+
+      .author-name {
+        font-size: 1.3rem;
+      }
+
+      .author-description {
+        font-size: 0.95rem;
       }
     }
   </style>

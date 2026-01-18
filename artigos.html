@@ -408,25 +408,64 @@
     @media (max-width: 768px) {
       .nav {
         flex-direction: column;
-        gap: 15px;
-        padding: 15px 20px;
+        gap: 12px;
+        padding: 12px 15px;
         text-align: center;
       }
 
+      .brand {
+        font-size: 14px;
+      }
+
       nav ul {
-        gap: 15px;
+        gap: 8px;
         flex-wrap: wrap;
         justify-content: center;
       }
 
+      nav a {
+        font-size: 13px;
+      }
+
+      .btn {
+        padding: 8px 14px;
+        font-size: 12px;
+      }
+
       .articles-hero {
-        padding: 60px 0 40px;
+        padding: 50px 15px 35px;
+      }
+
+      .articles-title {
+        font-size: 2rem;
+      }
+
+      .articles-subtitle {
+        font-size: 1rem;
+        padding: 0 10px;
+      }
+
+      .container {
+        padding: 0 15px;
+      }
+
+      .filter-options {
+        justify-content: flex-start;
+        overflow-x: auto;
+        padding-bottom: 10px;
+        gap: 8px;
+      }
+
+      .filter-btn {
+        padding: 8px 14px;
+        font-size: 12px;
+        white-space: nowrap;
       }
 
       .articles-grid {
         grid-template-columns: 1fr;
-        gap: 30px;
-        padding: 40px 0 60px;
+        gap: 20px;
+        padding: 30px 0 50px;
       }
 
       .featured-article {
@@ -434,35 +473,76 @@
       }
 
       .featured-article .article-image {
-        height: 200px;
+        height: 180px;
       }
 
-      .filter-options {
-        justify-content: flex-start;
-        overflow-x: auto;
-        padding-bottom: 10px;
+      .article-content {
+        padding: 18px;
       }
 
-      .form-group {
+      .article-content h3 {
+        font-size: 1.1rem;
+      }
+
+      .newsletter-section {
+        padding: 40px 20px;
+      }
+
+      .newsletter-section h2 {
+        font-size: 1.5rem;
+      }
+
+      .newsletter-form {
         flex-direction: column;
+        gap: 10px;
       }
 
       .newsletter-form input {
-        margin-bottom: 10px;
+        width: 100%;
+        margin-bottom: 0;
+      }
+
+      .newsletter-form button {
+        width: 100%;
+      }
+
+      footer {
+        padding: 30px 15px;
       }
     }
 
     @media (max-width: 480px) {
+      .brand {
+        font-size: 12px;
+      }
+
+      nav ul {
+        gap: 6px;
+      }
+
+      nav a {
+        font-size: 12px;
+      }
+
+      .btn {
+        padding: 6px 12px;
+        font-size: 11px;
+      }
+
       .articles-title {
-        font-size: 2rem;
+        font-size: 1.6rem;
       }
 
       .article-card {
-        border-radius: 12px;
+        border-radius: 10px;
       }
 
       .article-content {
-        padding: 20px;
+        padding: 15px;
+      }
+
+      .article-content h3 {
+        font-size: 1rem;
       }
     }
   </style>

@@ -285,34 +285,103 @@
     @media (max-width: 768px) {
       .nav {
         flex-direction: column;
-        gap: 15px;
+        gap: 12px;
+        padding: 12px 15px;
         text-align: center;
       }
 
+      .brand {
+        font-size: 14px;
+      }
+
       nav ul {
-        gap: 15px;
+        gap: 8px;
         flex-wrap: wrap;
         justify-content: center;
       }
 
+      nav a {
+        font-size: 13px;
+      }
+
+      .btn {
+        padding: 8px 14px;
+        font-size: 12px;
+      }
+
+      main {
+        padding: 30px 15px;
+      }
+
       .contact-card {
-        padding: 35px 25px;
+        padding: 30px 20px;
+        max-width: 100%;
       }
 
       .contact-title {
-        font-size: 1.7rem;
+        font-size: 1.5rem;
       }
-    }
 
-    @media (max-width: 480px) {
-      .contact-card {
-        padding: 30px 20px;
+      .contact-subtitle {
+        font-size: 0.9rem;
+      }
+
+      .form-group label {
+        font-size: 0.85rem;
       }
 
       .form-group input,
       .form-group textarea,
       .form-group select {
         padding: 12px 14px;
+        font-size: 0.95rem;
+      }
+
+      footer {
+        padding: 30px 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .brand {
+        font-size: 12px;
+      }
+
+      nav ul {
+        gap: 6px;
+      }
+
+      nav a {
+        font-size: 12px;
+      }
+
+      .btn {
+        padding: 6px 12px;
+        font-size: 11px;
+      }
+
+      .contact-card {
+        padding: 25px 15px;
+      }
+
+      .contact-title {
+        font-size: 1.3rem;
+      }
+
+      .icon-circle {
+        width: 50px;
+        height: 50px;
+      }
+
+      .icon-circle svg {
+        width: 24px;
+        height: 24px;
+      }
+
+      .form-group input,
+      .form-group textarea,
+      .form-group select {
+        padding: 10px 12px;
       }
     }
   </style>
